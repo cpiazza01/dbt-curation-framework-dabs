@@ -1,0 +1,27 @@
+# Local dev DBT profile — contains workspace-specific paths, never commit
+dbt/profiles.yml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.eggs/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Test artifacts
+.coverage
+htmlcov/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# DBT
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/

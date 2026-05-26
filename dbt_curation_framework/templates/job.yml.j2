@@ -1,0 +1,56 @@
+resources:
+  jobs:
+    dbt_curation_job:
+      name: {{ job_name }}
+      tags:
+{% for key, value in tags.items() %}
+        {{ key }}: "{{ value }}"
+{% endfor %}
+{% if schedule %}
+      schedule:
+        quartz_cron_expression: "{{ schedule.quartz_cron_expression }}"
+        timezone_id: "{{ schedule.timezone_id }}"
+        pause_status: {{ schedule.pause_status }}
+{% endif %}
+      email_notifications:
+        on_failure:
+{% for email in email_notifications %}
+          - "{{ email }}"
+{% endfor %}
+{% if email_on_success %}
+        on_success:
+{% for email in email_notifications %}
+          - "{{ email }}"
+{% endfor %}
+{% endif %}
+
+      tasks:
+        - task_key: dbt_build
+          dbt_task:
+            project_directory: {{ dbt_project_directory }}
+            commands:
+{% for cmd in dbt_commands %}
+              - "{{ cmd }}"
+{% endfor %}
+            warehouse_id: ${var.warehouse_id}
+            catalog: ${var.catalog}
+            schema: ${var.pre_gold_schema}
+          libraries:
+            - pypi:
+                package: dbt-databricks{{ dbt_version }}
+{% if trigger_downstream_job %}
+
+        - task_key: trigger_downstream_job
+          depends_on:
+            - task_key: dbt_build
+          run_job_task:
+            job_id: {{ downstream_job_id }}
+{% endif %}
+{% if service_principal_job_runners %}
+
+      permissions:
+{% for sp in service_principal_job_runners %}
+        - service_principal_name: "{{ sp }}"
+          level: CAN_MANAGE_RUN
+{% endfor %}
+{% endif %}

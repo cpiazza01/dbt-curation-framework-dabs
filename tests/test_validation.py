@@ -7,9 +7,22 @@ from tests.helpers import MINIMAL_CONFIG
 
 def test_minimal_config_valid():
     config = DbtCurationConfig.model_validate(MINIMAL_CONFIG)
-    assert config.project_name == "finance_gold"
+    assert config.job_name == "dbt_curation__finance_gold"
+    assert config.domain == "Finance"
     assert config.dbt_commands == ["dbt deps", "dbt build"]
     assert config.trigger_downstream_job is False
+
+
+def test_job_name_required():
+    raw = {k: v for k, v in MINIMAL_CONFIG.items() if k != "job_name"}
+    with pytest.raises(ValidationError, match="job_name"):
+        DbtCurationConfig.model_validate(raw)
+
+
+def test_domain_required():
+    raw = {k: v for k, v in MINIMAL_CONFIG.items() if k != "domain"}
+    with pytest.raises(ValidationError, match="domain"):
+        DbtCurationConfig.model_validate(raw)
 
 
 def test_email_notifications_required():

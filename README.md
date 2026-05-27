@@ -30,8 +30,8 @@ pip install dbt-curation-framework
 **1. Create `dbt_curation_config.yaml` in your bundle root:**
 
 ```yaml
-project_name: finance_gold
-github_repo: github.com/org/finance-gold
+job_name: dbt_curation__finance_gold
+domain: Finance
 email_notifications:
   - data-team@org.com
 
@@ -102,8 +102,8 @@ The `generate_schema_name` macro prevents DBT from prepending the target schema 
 
 | Field | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `project_name` | str | yes | — | Used in the job name and governance tags |
-| `github_repo` | str | yes | — | Governance tag applied to the job |
+| `job_name` | str | yes | — | Name of the Databricks Workflow job |
+| `domain` | str | yes | — | Business domain governance tag (e.g. `Finance`, `Marketing`) |
 | `dbt_project_directory` | str | no | `"./dbt"` | Path to the DBT project within the bundle |
 | `email_notifications` | list[str] | yes | — | At least one address; receives failure alerts |
 | `email_on_success` | bool | no | `false` | Also send notifications on successful runs |
@@ -136,8 +136,8 @@ The generated job uses these DABs bundle variables, which must be declared in yo
 ## Full config example
 
 ```yaml
-project_name: finance_gold
-github_repo: github.com/org/finance-gold
+job_name: dbt_curation__finance_gold
+domain: Finance
 dbt_project_directory: ./dbt
 
 email_notifications:

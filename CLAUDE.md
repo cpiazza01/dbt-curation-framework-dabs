@@ -35,8 +35,8 @@ ruff format dbt_curation_framework tests  # format
 
 | Field | Type | Required | Default | Notes |
 |---|---|---|---|---|
-| `project_name` | str | yes | — | Used in job name and governance tags |
-| `github_repo` | str | yes | — | Governance tag value |
+| `job_name` | str | yes | — | Name of the Databricks Workflow job |
+| `domain` | str | yes | — | Business domain governance tag (e.g. `Finance`, `Marketing`) |
 | `dbt_project_directory` | str | no | `"./dbt"` | Path to dbt project within bundle |
 | `email_notifications` | list[str] | yes | — | At least one address |
 | `schedule` | Schedule | no | None | Quartz cron schedule |

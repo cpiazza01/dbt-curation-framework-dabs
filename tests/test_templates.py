@@ -15,10 +15,10 @@ def test_job_renders_valid_yaml(jinja_env):
     assert "jobs" in parsed["resources"]
 
 
-def test_job_name_includes_env(jinja_env):
-    context = make_context(env="prod")
+def test_job_name_present(jinja_env):
+    context = make_context()
     rendered = jinja_env.get_template("job.yml.j2").render(context)
-    assert "prod" in rendered
+    assert "dbt_curation__finance_gold" in rendered
 
 
 def test_job_has_dbt_build_task(jinja_env):
@@ -74,13 +74,14 @@ def test_job_governance_tags_present(jinja_env):
     rendered = jinja_env.get_template("job.yml.j2").render(context)
     assert "FrameworkUsed" in rendered
     assert "dbt-curation-framework" in rendered
-    assert "GitHubRepo" in rendered
+    assert "Domain" in rendered
+    assert "Finance" in rendered
 
 
-def test_profiles_renders_project_name(jinja_env):
+def test_profiles_renders_default_profile_name(jinja_env):
     context = make_context()
     rendered = jinja_env.get_template("profiles.yml.j2").render(context)
-    assert "finance_gold:" in rendered
+    assert "default:" in rendered
 
 
 def test_profiles_contains_databricks_type_and_oauth(jinja_env):

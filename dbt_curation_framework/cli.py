@@ -20,8 +20,8 @@ class Schedule(BaseModel):
 
 
 class DbtCurationConfig(BaseModel):
-    project_name: str
-    github_repo: str
+    job_name: str
+    domain: str
     dbt_project_directory: str = "./dbt"
     email_notifications: list[str]
     schedule: Schedule | None = None
@@ -86,12 +86,10 @@ def load_bundle(bundle_path: str = "databricks.yml") -> dict:
 
 
 def build_context(config: DbtCurationConfig, bundle: dict, env: str) -> dict:
-    job_name = f"dbt_curation__{config.project_name}__{env}"
-
     all_tags = {
+        "Domain": config.domain,
         "FrameworkUsed": "dbt-curation-framework",
-        "GitHubRepo": config.github_repo,
-        "JobName": job_name,
+        "JobName": config.job_name,
         **config.tags,
     }
 
@@ -99,9 +97,7 @@ def build_context(config: DbtCurationConfig, bundle: dict, env: str) -> dict:
     catalog = resolve_bundle_var(bundle, env, "catalog", fallback="<catalog>")
 
     return {
-        "project_name": config.project_name,
-        "github_repo": config.github_repo,
-        "job_name": job_name,
+        "job_name": config.job_name,
         "dbt_project_directory": config.dbt_project_directory,
         "email_notifications": config.email_notifications,
         "schedule": config.schedule.model_dump() if config.schedule else None,
@@ -165,7 +161,7 @@ def main() -> None:
 
     jinja_env = get_jinja_env()
 
-    print(f"\nGenerating DABs resources for '{config.project_name}' (env: {args.env})...")
+    print(f"\nGenerating DABs resources for '{config.job_name}' (env: {args.env})...")
     render_and_write(jinja_env, "job.yml.j2", context, "resources/dbt_job.yml")
     render_and_write(jinja_env, "profiles.yml.j2", context, "dbt/profiles.yml")
     render_and_write(
@@ -186,7 +182,7 @@ Next steps:
   2. Configure +schema in your dbt_project.yml so models land in the right schema:
 
        models:
-         {config.project_name}:
+         <your_dbt_project_name>:
            staging:
              +schema: pre_gold
            intermediate:

@@ -2,8 +2,8 @@
 from dbt_curation_framework.cli import DbtCurationConfig, build_context
 
 MINIMAL_CONFIG = {
-    "project_name": "finance_gold",
-    "github_repo": "github.com/org/finance-gold",
+    "job_name": "dbt_curation__finance_gold",
+    "domain": "Finance",
     "email_notifications": ["oncall@org.com"],
 }
 

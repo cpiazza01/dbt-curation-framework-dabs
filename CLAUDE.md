@@ -47,6 +47,12 @@ ruff format dbt_curation_framework tests  # format
 | `email_on_success` | bool | no | false | Also send notifications on successful runs |
 | `tags` | dict | no | {} | Extra governance tags on the job |
 | `dbt_version` | str | no | `">=1.9.0,<2.0.0"` | PyPI version spec for dbt-databricks |
+| `disable_auto_optimization` | bool | no | true | Disable Databricks enhanced auto-retry on the task |
+| `max_retries` | int | no | 0 | Number of times to retry a failed task |
+| `retry_on_timeout` | bool | no | false | Retry the task if it times out |
+| `min_retry_interval_millis` | int | no | — | Minimum delay between retries in milliseconds |
+| `timeout_seconds` | int | no | 7200 | Maximum task run duration in seconds (default 2 hours) |
+| `performance_target` | str | no | `"STANDARD"` | Job-level serverless performance target (e.g. `PERFORMANCE_OPTIMIZED`) |
 
 `Schedule` fields: `quartz_cron_expression`, `timezone_id`, `pause_status` (UNPAUSED/PAUSED).
 

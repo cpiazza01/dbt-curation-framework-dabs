@@ -72,3 +72,31 @@ def test_custom_dbt_commands():
         "dbt_commands": ["dbt deps", "dbt seed", "dbt build --select +marts+"],
     })
     assert len(config.dbt_commands) == 3
+
+
+def test_task_execution_defaults():
+    config = DbtCurationConfig.model_validate(MINIMAL_CONFIG)
+    assert config.disable_auto_optimization is True
+    assert config.max_retries == 0
+    assert config.retry_on_timeout is False
+    assert config.min_retry_interval_millis is None
+    assert config.timeout_seconds == 7200
+    assert config.performance_target == "STANDARD"
+
+
+def test_task_execution_overrides():
+    config = DbtCurationConfig.model_validate({
+        **MINIMAL_CONFIG,
+        "disable_auto_optimization": False,
+        "max_retries": 3,
+        "retry_on_timeout": True,
+        "min_retry_interval_millis": 60000,
+        "timeout_seconds": 3600,
+        "performance_target": "PERFORMANCE_OPTIMIZED",
+    })
+    assert config.disable_auto_optimization is False
+    assert config.max_retries == 3
+    assert config.retry_on_timeout is True
+    assert config.min_retry_interval_millis == 60000
+    assert config.timeout_seconds == 3600
+    assert config.performance_target == "PERFORMANCE_OPTIMIZED"

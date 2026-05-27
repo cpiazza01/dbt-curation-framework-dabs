@@ -34,6 +34,12 @@ class DbtCurationConfig(BaseModel):
     tags: dict[str, str] = {}
     dbt_version: str = ">=1.9.0,<2.0.0"
     email_on_success: bool = False
+    disable_auto_optimization: bool = True
+    max_retries: int = 0
+    retry_on_timeout: bool = False
+    min_retry_interval_millis: int | None = None
+    timeout_seconds: int = 7200
+    performance_target: str = "STANDARD"
 
     @model_validator(mode="after")
     def validate_email_notifications(self) -> "DbtCurationConfig":
@@ -108,6 +114,12 @@ def build_context(config: DbtCurationConfig, bundle: dict, target: str) -> dict:
         "service_principal_job_runners": config.service_principal_job_runners,
         "tags": all_tags,
         "dbt_version": config.dbt_version,
+        "disable_auto_optimization": config.disable_auto_optimization,
+        "max_retries": config.max_retries,
+        "retry_on_timeout": config.retry_on_timeout,
+        "min_retry_interval_millis": config.min_retry_interval_millis,
+        "timeout_seconds": config.timeout_seconds,
+        "performance_target": config.performance_target,
         "target": target,
         "catalog": catalog,
     }

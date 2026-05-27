@@ -2,6 +2,7 @@ resources:
   jobs:
     dbt_curation_job:
       name: {{ job_name }}
+      performance_target: {{ performance_target }}
       tags:
 {% for key, value in tags.items() %}
         {{ key }}: "{{ value }}"
@@ -34,6 +35,13 @@ resources:
       tasks:
         - task_key: dbt_build
           environment_key: dbt_env
+          disable_auto_optimization: {{ disable_auto_optimization | lower }}
+          timeout_seconds: {{ timeout_seconds }}
+          max_retries: {{ max_retries }}
+          retry_on_timeout: {{ retry_on_timeout | lower }}
+{% if min_retry_interval_millis is not none %}
+          min_retry_interval_millis: {{ min_retry_interval_millis }}
+{% endif %}
           dbt_task:
             project_directory: {{ dbt_project_directory }}
             commands:

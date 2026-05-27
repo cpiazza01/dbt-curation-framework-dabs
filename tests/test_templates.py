@@ -113,6 +113,34 @@ def test_no_email_on_success_when_disabled(jinja_env):
     assert "on_success" not in rendered
 
 
+def test_task_defaults_rendered(jinja_env):
+    context = make_context()
+    rendered = jinja_env.get_template("job.yml.j2").render(context)
+    assert "disable_auto_optimization: true" in rendered
+    assert "timeout_seconds: 7200" in rendered
+    assert "max_retries: 0" in rendered
+    assert "retry_on_timeout: false" in rendered
+    assert "min_retry_interval_millis" not in rendered
+
+
+def test_min_retry_interval_rendered_when_set(jinja_env):
+    context = make_context(FULL_CONFIG)
+    rendered = jinja_env.get_template("job.yml.j2").render(context)
+    assert "min_retry_interval_millis: 30000" in rendered
+
+
+def test_performance_target_rendered_when_set(jinja_env):
+    context = make_context(FULL_CONFIG)
+    rendered = jinja_env.get_template("job.yml.j2").render(context)
+    assert "performance_target: PERFORMANCE_OPTIMIZED" in rendered
+
+
+def test_performance_target_default_is_standard(jinja_env):
+    context = make_context()
+    rendered = jinja_env.get_template("job.yml.j2").render(context)
+    assert "performance_target: STANDARD" in rendered
+
+
 def test_generate_schema_name_macro_renders(jinja_env):
     context = make_context()
     rendered = jinja_env.get_template("generate_schema_name.sql.j2").render(context)

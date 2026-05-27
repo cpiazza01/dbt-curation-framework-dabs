@@ -114,6 +114,12 @@ The `generate_schema_name` macro prevents DBT from prepending the target schema 
 | `service_principal_job_runners` | list[str] | no | `[]` | SP client IDs granted `CAN_MANAGE_RUN` |
 | `tags` | dict | no | `{}` | Extra key/value tags applied to the job |
 | `dbt_version` | str | no | `">=1.9.0,<2.0.0"` | PyPI version spec for `dbt-databricks` |
+| `disable_auto_optimization` | bool | no | `true` | Disable Databricks enhanced auto-retry on the task |
+| `max_retries` | int | no | `0` | Number of times to retry a failed task |
+| `retry_on_timeout` | bool | no | `false` | Retry the task if it times out |
+| `min_retry_interval_millis` | int | no | — | Minimum delay between retries in milliseconds |
+| `timeout_seconds` | int | no | `7200` | Maximum task run duration in seconds (default 2 hours) |
+| `performance_target` | str | no | `"STANDARD"` | Job-level serverless performance target (e.g. `PERFORMANCE_OPTIMIZED`) |
 
 ### Schedule fields
 
@@ -164,6 +170,13 @@ tags:
   CostCenter: BI
 
 dbt_version: ">=1.9.0,<2.0.0"
+
+disable_auto_optimization: true
+max_retries: 0
+retry_on_timeout: false
+min_retry_interval_millis: 30000
+timeout_seconds: 7200
+performance_target: STANDARD
 ```
 
 ## Local development

@@ -22,6 +22,12 @@ FULL_CONFIG = {
     "tags": {"Domain": "Finance", "CostCenter": "BI"},
     "dbt_version": ">=1.9.0,<2.0.0",
     "email_on_success": True,
+    "disable_auto_optimization": True,
+    "max_retries": 2,
+    "retry_on_timeout": True,
+    "min_retry_interval_millis": 30000,
+    "timeout_seconds": 3600,
+    "performance_target": "PERFORMANCE_OPTIMIZED",
 }
 
 SAMPLE_BUNDLE = {

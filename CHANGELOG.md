@@ -8,6 +8,13 @@ All notable changes to this project will be documented here. This project adhere
 
 ---
 
+## [0.1.2] — 2026-05-27
+
+### Fixed
+- Correct dbt_project_directory default from ./dbt to ../dbt
+
+
+---
 ## [0.1.1] — 2026-05-27
 
 ### Changed

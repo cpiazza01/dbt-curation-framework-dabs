@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dbt-curation-framework"
-version = "0.1.2"
+version = "0.1.3"
 description = "YAML-driven DBT curation framework for Databricks gold layer using Declarative Automation Bundles"
 requires-python = ">=3.9"
 dependencies = [
@@ -38,7 +38,7 @@ line-length = 120
 select = ["E", "F", "I"]
 
 [tool.bumpversion]
-current_version = "0.1.2"
+current_version = "0.1.3"
 commit = true
 tag = true
 tag_name = "v{new_version}"

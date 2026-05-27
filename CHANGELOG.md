@@ -8,6 +8,13 @@ All notable changes to this project will be documented here. This project adhere
 
 ---
 
+## [0.1.3] — 2026-05-27
+
+### Fixed
+- Use serverless environment spec for native DBT task
+
+
+---
 ## [0.1.2] — 2026-05-27
 
 ### Fixed

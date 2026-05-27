@@ -26,6 +26,8 @@ def test_job_has_dbt_build_task(jinja_env):
     rendered = jinja_env.get_template("job.yml.j2").render(context)
     assert "dbt_build" in rendered
     assert "dbt_task" in rendered
+    assert "environment_key: dbt_env" in rendered
+    assert "dbt-databricks" in rendered
 
 
 def test_job_uses_bundle_vars_for_warehouse_catalog(jinja_env):

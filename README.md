@@ -155,13 +155,12 @@ dbt_commands:
   - "dbt build"
 
 trigger_downstream_job: true
-downstream_job_id: 12345
+downstream_job_id: "12345"
 
 service_principal_job_runners:
   - "my-sp-client-id"
 
 tags:
-  Domain: Finance
   CostCenter: BI
 
 dbt_version: ">=1.9.0,<2.0.0"

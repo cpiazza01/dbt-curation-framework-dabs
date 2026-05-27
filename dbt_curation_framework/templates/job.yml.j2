@@ -24,8 +24,16 @@ resources:
 {% endfor %}
 {% endif %}
 
+      environments:
+        - environment_key: dbt_env
+          spec:
+            client: "1"
+            dependencies:
+              - dbt-databricks{{ dbt_version }}
+
       tasks:
         - task_key: dbt_build
+          environment_key: dbt_env
           dbt_task:
             project_directory: {{ dbt_project_directory }}
             commands:
@@ -35,9 +43,6 @@ resources:
             warehouse_id: ${var.warehouse_id}
             catalog: ${var.catalog}
             schema: ${var.pre_gold_schema}
-          libraries:
-            - pypi:
-                package: dbt-databricks{{ dbt_version }}
 {% if trigger_downstream_job %}
 
         - task_key: trigger_downstream_job

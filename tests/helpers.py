@@ -42,6 +42,6 @@ def make_config(overrides: dict | None = None) -> DbtCurationConfig:
     return DbtCurationConfig.model_validate(raw)
 
 
-def make_context(overrides: dict | None = None, env: str = "dev") -> dict:
+def make_context(overrides: dict | None = None, target: str = "dev") -> dict:
     config = make_config(overrides)
-    return build_context(config, SAMPLE_BUNDLE, env)
+    return build_context(config, SAMPLE_BUNDLE, target)

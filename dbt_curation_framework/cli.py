@@ -57,9 +57,9 @@ class DbtCurationConfig(BaseModel):
 # ── Bundle variable resolution ────────────────────────────────────────────────
 
 
-def resolve_bundle_var(bundle: dict, env: str, var_name: str, fallback: str | None = None) -> str:
+def resolve_bundle_var(bundle: dict, target: str, var_name: str, fallback: str | None = None) -> str:
     """Resolve a DABs bundle variable, preferring target-level overrides."""
-    target_vars = bundle.get("targets", {}).get(env, {}).get("variables", {})
+    target_vars = bundle.get("targets", {}).get(target, {}).get("variables", {})
     if var_name in target_vars:
         val = target_vars[var_name]
         return str(val) if val is not None else (fallback or "")
@@ -72,7 +72,7 @@ def resolve_bundle_var(bundle: dict, env: str, var_name: str, fallback: str | No
 
     if fallback is not None:
         return fallback
-    raise KeyError(f"Variable '{var_name}' not found in databricks.yml for env '{env}'")
+    raise KeyError(f"Variable '{var_name}' not found in databricks.yml for target '{target}'")
 
 
 def load_bundle(bundle_path: str = "databricks.yml") -> dict:
@@ -85,7 +85,7 @@ def load_bundle(bundle_path: str = "databricks.yml") -> dict:
 # ── Context building ──────────────────────────────────────────────────────────
 
 
-def build_context(config: DbtCurationConfig, bundle: dict, env: str) -> dict:
+def build_context(config: DbtCurationConfig, bundle: dict, target: str) -> dict:
     all_tags = {
         "Domain": config.domain,
         "FrameworkUsed": "dbt-curation-framework",
@@ -94,7 +94,7 @@ def build_context(config: DbtCurationConfig, bundle: dict, env: str) -> dict:
     }
 
     # Resolve catalog for profiles.yml local dev default; fall back gracefully.
-    catalog = resolve_bundle_var(bundle, env, "catalog", fallback="<catalog>")
+    catalog = resolve_bundle_var(bundle, target, "catalog", fallback="<catalog>")
 
     return {
         "job_name": config.job_name,
@@ -108,7 +108,7 @@ def build_context(config: DbtCurationConfig, bundle: dict, env: str) -> dict:
         "service_principal_job_runners": config.service_principal_job_runners,
         "tags": all_tags,
         "dbt_version": config.dbt_version,
-        "env": env,
+        "target": target,
         "catalog": catalog,
     }
 
@@ -149,7 +149,7 @@ def render_and_write(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate DABs resources for DBT curation jobs")
     parser.add_argument("--config", required=True, help="Path to dbt_curation_config.yaml")
-    parser.add_argument("--env", required=True, help="Target environment (e.g. dev, prod)")
+    parser.add_argument("--target", required=True, help="DABs target name (e.g. dev, prod)")
     args = parser.parse_args()
 
     with open(args.config) as f:
@@ -157,11 +157,11 @@ def main() -> None:
 
     config = DbtCurationConfig.model_validate(raw)
     bundle = load_bundle("databricks.yml")
-    context = build_context(config, bundle, args.env)
+    context = build_context(config, bundle, args.target)
 
     jinja_env = get_jinja_env()
 
-    print(f"\nGenerating DABs resources for '{config.job_name}' (env: {args.env})...")
+    print(f"\nGenerating DABs resources for '{config.job_name}' (target: {args.target})...")
     render_and_write(jinja_env, "job.yml.j2", context, "resources/dbt_job.yml")
     render_and_write(jinja_env, "profiles.yml.j2", context, "dbt/profiles.yml")
     render_and_write(
@@ -192,5 +192,5 @@ Next steps:
 
   3. Commit resources/dbt_job.yml and dbt/macros/generate_schema_name.sql to git.
 
-  4. Deploy: databricks bundle deploy --target {args.env}
+  4. Deploy: databricks bundle deploy --target {args.target}
 """)

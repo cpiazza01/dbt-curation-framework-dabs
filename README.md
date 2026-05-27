@@ -22,7 +22,7 @@ The generated Workflow job runs a single native DBT task against a Databricks SQ
 ## Installation
 
 ```bash
-pip install dbt-curation-framework
+pip install git+https://github.com/cpiazza01/dbt-curation-framework@v1.0.0
 ```
 
 ## Quick start
@@ -84,7 +84,7 @@ models:
 **4. Generate and deploy:**
 
 ```bash
-dbt-curation-generate --config dbt_curation_config.yaml --env dev
+dbt-curation-generate --config dbt_curation_config.yaml --target dev
 databricks bundle deploy --target dev
 ```
 

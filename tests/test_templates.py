@@ -95,7 +95,7 @@ def test_profiles_contains_databricks_type_and_oauth(jinja_env):
 
 
 def test_profiles_catalog_resolved_from_bundle(jinja_env):
-    context = make_context(env="dev")
+    context = make_context(target="dev")
     rendered = jinja_env.get_template("profiles.yml.j2").render(context)
     # dev target overrides catalog to "dev_enterprise"
     assert "dev_enterprise" in rendered

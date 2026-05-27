@@ -22,7 +22,7 @@ class Schedule(BaseModel):
 class DbtCurationConfig(BaseModel):
     job_name: str
     domain: str
-    dbt_project_directory: str = "./dbt"
+    dbt_project_directory: str = "../dbt"
     email_notifications: list[str]
     schedule: Schedule | None = None
     trigger_downstream_job: bool = False

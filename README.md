@@ -104,7 +104,7 @@ The `generate_schema_name` macro prevents DBT from prepending the target schema 
 |---|---|---|---|---|
 | `job_name` | str | yes | — | Name of the Databricks Workflow job |
 | `domain` | str | yes | — | Business domain governance tag (e.g. `Finance`, `Marketing`) |
-| `dbt_project_directory` | str | no | `"./dbt"` | Path to the DBT project within the bundle |
+| `dbt_project_directory` | str | no | `"../dbt"` | Path to dbt project, relative to `resources/dbt_job.yml` |
 | `email_notifications` | list[str] | yes | — | At least one address; receives failure alerts |
 | `email_on_success` | bool | no | `false` | Also send notifications on successful runs |
 | `schedule` | Schedule | no | None | Quartz cron expression for automatic triggering |
@@ -138,7 +138,7 @@ The generated job uses these DABs bundle variables, which must be declared in yo
 ```yaml
 job_name: dbt_curation__finance_gold
 domain: Finance
-dbt_project_directory: ./dbt
+dbt_project_directory: ../dbt
 
 email_notifications:
   - data-team@org.com

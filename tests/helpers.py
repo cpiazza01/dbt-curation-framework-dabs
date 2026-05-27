@@ -9,7 +9,7 @@ MINIMAL_CONFIG = {
 
 FULL_CONFIG = {
     **MINIMAL_CONFIG,
-    "dbt_project_directory": "./dbt",
+    "dbt_project_directory": "../dbt",
     "schedule": {
         "quartz_cron_expression": "0 0 6 ? * MON-FRI",
         "timezone_id": "America/Los_Angeles",

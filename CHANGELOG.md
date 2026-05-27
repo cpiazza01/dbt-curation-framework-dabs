@@ -10,6 +10,10 @@ All notable changes to this project will be documented here. This project adhere
 
 ## [0.1.5] — 2026-05-27
 
+### Added
+- Add task execution and performance config fields
+
+
 ### Fixed
 - Rename --env to --target to align with DABs terminology
 

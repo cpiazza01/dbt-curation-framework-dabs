@@ -14,6 +14,10 @@ All notable changes to this project will be documented here. This project adhere
 - Replace project_name/github_repo with explicit job_name field and require domain tag
 
 
+### Fixed
+- Change downstream_job_id type from int to str
+
+
 ---
 ## [0.1.0] — 2026-05-26
 

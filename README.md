@@ -109,7 +109,7 @@ The `generate_schema_name` macro prevents DBT from prepending the target schema 
 | `email_on_success` | bool | no | `false` | Also send notifications on successful runs |
 | `schedule` | Schedule | no | None | Quartz cron expression for automatic triggering |
 | `trigger_downstream_job` | bool | no | `false` | Run another Databricks job after completion |
-| `downstream_job_id` | int | conditional | — | Required when `trigger_downstream_job: true` |
+| `downstream_job_id` | str | conditional | — | Required when `trigger_downstream_job: true` |
 | `dbt_commands` | list[str] | no | `["dbt deps", "dbt build"]` | Commands passed to the native DBT task |
 | `service_principal_job_runners` | list[str] | no | `[]` | SP client IDs granted `CAN_MANAGE_RUN` |
 | `tags` | dict | no | `{}` | Extra key/value tags applied to the job |

@@ -41,7 +41,7 @@ ruff format dbt_curation_framework tests  # format
 | `email_notifications` | list[str] | yes | — | At least one address |
 | `schedule` | Schedule | no | None | Quartz cron schedule |
 | `trigger_downstream_job` | bool | no | false | Chain to another Databricks job |
-| `downstream_job_id` | int | conditional | None | Required when trigger enabled |
+| `downstream_job_id` | str | conditional | None | Required when trigger enabled |
 | `dbt_commands` | list[str] | no | `["dbt deps", "dbt build"]` | Commands run inside the DBT task |
 | `service_principal_job_runners` | list[str] | no | [] | SP client IDs granted CAN_MANAGE_RUN |
 | `email_on_success` | bool | no | false | Also send notifications on successful runs |

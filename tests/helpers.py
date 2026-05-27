@@ -16,7 +16,7 @@ FULL_CONFIG = {
         "pause_status": "UNPAUSED",
     },
     "trigger_downstream_job": True,
-    "downstream_job_id": 42,
+    "downstream_job_id": "42",
     "dbt_commands": ["dbt deps", "dbt build --vars '{env: prod}'"],
     "service_principal_job_runners": ["sp-abc123"],
     "tags": {"Domain": "Finance", "CostCenter": "BI"},

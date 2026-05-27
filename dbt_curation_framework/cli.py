@@ -26,7 +26,7 @@ class DbtCurationConfig(BaseModel):
     email_notifications: list[str]
     schedule: Schedule | None = None
     trigger_downstream_job: bool = False
-    downstream_job_id: int | None = None
+    downstream_job_id: str | None = None
     # DBT commands to run — consumers can override to add selectors, vars, flags, etc.
     # Schema routing (pre_gold vs gold) is handled via +schema in the consumer's dbt_project.yml.
     dbt_commands: list[str] = ["dbt deps", "dbt build"]
